@@ -20,37 +20,45 @@ endif
 syn case ignore
 
 syn cluster AlwaysContains add=Errors
-syn cluster NormalContains add=Numbers,CPM,Links
+syn cluster NormalContains add=Numbers,CPM,EPM,Links,Letters
 syn cluster QuoteContains  add=Quoted,SingleQuoted,Bracketed
 
 " English Punctuation Marks
 syn match EPM "[~\-_+*<>\[\]{}=|#@$%&\\/:&\^\.,!?]"
 
+syn match Letters "[A-Za-z]"
+
 " Normal Chinese Punctuation Marks
 syn match CPM "[，。；：！？、《》【】“”‘’（）『』「」〖〗﹝﹞〔〕〈〉…￥·■◆▲●★□◇△○☆＄‰￥℃※±⑴⑵⑶⑷⑸⑹⑺⑻⑼⑽⑾⑿⒀⒁⒂⒃⒄⒅⒆⒇⒈⒉⒊⒋⒌⒍⒎⒏⒐⒑⒒⒓⒔⒕⒖⒗⒘⒙⒚⒛①②③④⑤⑥⑦⑧⑨⑩㈠㈡㈢㈣㈤㈥㈦㈧㈨㈩→←↑↓§№◎ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅪⅫ≈≡≠＝≤≥＜＞≮≯∷±＋－×÷／∫∮∝∞∧∨∑∏∪∩∈∵∴⊥∥∠⌒⊙≌∽√°¤￠〇]"
+
 " 数字
 syn match Numbers "\d\(\.\d\+\)\?"
 syn match Numbers "\d"
-syn match Links       "\(http\|https\|ftp\)\(\w\|[\-&=,?\:\.\/]\)*"   contains=CPM
+
+"链接
+syn match Links   "\(http\|https\|ftp\)\(\w\|[\-&=,?\:\.\/]\)*"  contains=CPM
+
+"引号与括号
 syn region Bracketed         matchgroup=CPM  start="[（]"        end="[）]"  contains=@QuoteContains,@NormalContains,@AlwaysContains
 syn region Quoted            matchgroup=EPM  start="\""          end="\""    contains=@QuoteContains,@NormalContains,@AlwaysContains
 syn region Quoted            matchgroup=CPM  start="[《]"        end="[》]"  contains=@QuoteContains,@NormalContains,@AlwaysContains
-syn region Quoted            matchgroup=CPM  start="[“]"         end="[”]"   contains=@QuoteContains,@NormalContains,@AlwaysContains
+syn region Quoted            matchgroup=CPM  start="[“]"        end="[”]"  contains=@QuoteContains,@NormalContains,@AlwaysContains
 syn region Quoted            matchgroup=CPM  start="[『]"        end="[』]"  contains=@QuoteContains,@NormalContains,@AlwaysContains
 syn region Quoted            matchgroup=CPM  start="[【]"        end="[】]"  contains=@QuoteContains,@NormalContains,@AlwaysContains
 syn region Quoted            matchgroup=CPM  start="[﹝]"        end="[﹞]"  contains=@QuoteContains,@NormalContains,@AlwaysContains
 syn region Quoted            matchgroup=CPM  start="[〔]"        end="[〕]"  contains=@QuoteContains,@NormalContains,@AlwaysContains
-syn region Quoted            matchgroup=EPM  start="\(\s\|^\)\@<='"  end="'" contains=@QuoteContains,@NormalContains,@AlwaysContains
+syn region Quoted            matchgroup=EPM  start="\(\s\|^\)\@<='" end="'"  contains=@QuoteContains,@NormalContains,@AlwaysContains
 syn region SingleQuoted      matchgroup=CPM  start="[〈]"        end="[〉]"  contains=@QuoteContains,@NormalContains,@AlwaysContains
 syn region SingleQuoted      matchgroup=CPM  start="[「]"        end="[」]"  contains=@QuoteContains,@NormalContains,@AlwaysContains
-syn region SingleQuoted      matchgroup=CPM  start="[‘]"         end="[’]"   contains=@QuoteContains,@NormalContains,@AlwaysContains
+syn region SingleQuoted      matchgroup=CPM  start="[‘]"        end="[’]"  contains=@QuoteContains,@NormalContains,@AlwaysContains
 syn region SingleQuoted      matchgroup=CPM  start="[〖]"        end="[〗]"  contains=@QuoteContains,@NormalContains,@AlwaysContains
-syn region Comments  matchgroup=EPM         start="("       end=")"         contains=@QuoteContains,@NormalContains,@AlwaysContains
-syn region Comments  matchgroup=Comments    start="\/\/"    end="$"         contains=@AlwaysContains       oneline
-syn region Comments  matchgroup=Comments    start="\/\*"    end="\*\/"      contains=@AlwaysContains
-syn region Tags    matchgroup=EPM start="<"        end=">"         contains=@NormalContains,@AlwaysContains oneline
-syn region Tags    matchgroup=EPM start="{"        end="}"         contains=@NormalContains,@AlwaysContains oneline
-syn region Tags    matchgroup=EPM start="\["       end="\]"        contains=@NormalContains,@AlwaysContains oneline 
+syn region Comments          matchgroup=EPM  start="("           end=")"     contains=@QuoteContains,@NormalContains,@AlwaysContains
+syn region Comments          matchgroup=Comments start="\/\/"    end="$"     contains=@AlwaysContains       oneline
+syn region Comments          matchgroup=Comments start="\/\*"    end="\*\/"  contains=@AlwaysContains
+syn region Tags              matchgroup=EPM  start="<"           end=">"     contains=@NormalContains,@AlwaysContains oneline
+syn region Tags              matchgroup=EPM  start="{"           end="}"     contains=@NormalContains,@AlwaysContains oneline
+syn region Tags              matchgroup=EPM  start="\["          end="\]"    contains=@NormalContains,@AlwaysContains oneline 
+
 syn keyword Errors error bug warning fatal rtfm
 
 syn case match
@@ -70,8 +78,9 @@ syn case match
   HiLink Quoted               Label
   HiLink SingleQuoted         Structure
   HiLink Comments             Comment
-  HiLink Links                Identifier
+  HiLink Links                Underlined
   HiLink Tags                 Function
+  HiLink Letters              Identifier
   delcommand HiLink
 
   hi Errors                   ctermfg=red guifg=red
